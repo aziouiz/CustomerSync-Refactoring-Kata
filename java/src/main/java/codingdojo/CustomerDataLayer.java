@@ -6,8 +6,6 @@ public interface CustomerDataLayer {
 
     Customer createCustomerRecord(Customer customer);
 
-    void updateShoppingList(ShoppingList consumerShoppingList);
-
     Customer findByExternalId(String externalId);
 
     Customer findByMasterExternalId(String externalId);

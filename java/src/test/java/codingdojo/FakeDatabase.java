@@ -10,7 +10,6 @@ public class FakeDatabase implements CustomerDataLayer {
     private final HashMap<String, Customer> customersByExternalId = new HashMap<String, Customer>();
     private final HashMap<String, Customer> customersByMasterExternalId = new HashMap<String, Customer>();
     private final HashMap<String, Customer> customersByCompanyNumber = new HashMap<String, Customer>();
-    private final Set<ShoppingList> shoppingLists = new HashSet<>();
 
 
     public void addCustomer(Customer customer) {
@@ -22,9 +21,6 @@ public class FakeDatabase implements CustomerDataLayer {
         }
         if (customer.getCompanyNumber() != null) {
             this.customersByCompanyNumber.put(customer.getCompanyNumber(), customer);
-        }
-        if (customer.getShoppingLists() != null) {
-            shoppingLists.addAll(customer.getShoppingLists());
         }
     }
 
@@ -40,11 +36,6 @@ public class FakeDatabase implements CustomerDataLayer {
         customer.setInternalId(internalId);
         addCustomer(customer);
         return customer;
-    }
-
-    @Override
-    public void updateShoppingList(ShoppingList consumerShoppingList) {
-        shoppingLists.add(consumerShoppingList);
     }
 
     @Override
@@ -80,12 +71,6 @@ public class FakeDatabase implements CustomerDataLayer {
             sb.append(CustomerPrinter.print(customer, "    "));
             sb.append("\n");
         }
-
-        sb.append("\n}");
-        sb.append("\nAll Shopping Lists\n");
-        List<ShoppingList> sortedShoppingLists = new ArrayList<>(shoppingLists);
-        sortedShoppingLists.sort(Comparator.comparing(o -> o.getProducts().toString()));
-        sb.append(ShoppingListPrinter.printShoppingLists(sortedShoppingLists, ""));
         return sb.toString();
     }
 }

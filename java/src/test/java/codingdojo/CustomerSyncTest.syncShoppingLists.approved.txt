@@ -14,9 +14,6 @@ All Customers {
         shoppingLists=[[eyeliner, blusher]]
     }
 
-}
-All Shopping Lists
-[[eyeliner, blusher]]
 SYNCING THIS:
 ExternalCustomer {
     externalId='12345'
@@ -44,10 +41,3 @@ All Customers {
             [lipstick, blusher]
         ]
     }
-
-}
-All Shopping Lists
-[
-    [eyeliner, blusher]
-    [lipstick, blusher]
-]

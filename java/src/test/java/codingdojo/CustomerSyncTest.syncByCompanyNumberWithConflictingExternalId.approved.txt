@@ -14,9 +14,6 @@ All Customers {
         shoppingLists=[]
     }
 
-}
-All Shopping Lists
-[]
 SYNCING THIS:
 ExternalCustomer {
     externalId='45646'
@@ -41,7 +38,3 @@ All Customers {
         address='null'
         shoppingLists=[]
     }
-
-}
-All Shopping Lists
-[]

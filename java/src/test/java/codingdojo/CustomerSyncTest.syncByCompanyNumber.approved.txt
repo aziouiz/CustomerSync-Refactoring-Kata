@@ -14,9 +14,6 @@ All Customers {
         shoppingLists=[[eyeliner, mascara, blue bombe eyeshadow]]
     }
 
-}
-All Shopping Lists
-[[eyeliner, mascara, blue bombe eyeshadow]]
 SYNCING THIS:
 ExternalCustomer {
     externalId='12345'
@@ -44,10 +41,3 @@ All Customers {
             [lipstick, blusher]
         ]
     }
-
-}
-All Shopping Lists
-[
-    [eyeliner, mascara, blue bombe eyeshadow]
-    [lipstick, blusher]
-]
