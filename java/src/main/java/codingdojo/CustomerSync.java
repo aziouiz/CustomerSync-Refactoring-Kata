@@ -13,6 +13,11 @@ public class CustomerSync {
         this.customerDataLayer = customerDataLayer;
     }
 
+    /**
+     * Syncs an external customer with an eventually existing equivalent. (company or person).
+     * @param externalCustomer the external customer to sync
+     * @return true if the customer was created, false if the customer already exists and was just updated.
+     */
     public boolean syncWithDataLayer(ExternalCustomer externalCustomer) {
         if (externalCustomer.isCompany()) {
             return syncCompanyCustomer(externalCustomer);
@@ -20,6 +25,11 @@ public class CustomerSync {
         return syncPersonCustomer(externalCustomer);
     }
 
+    /**
+     * Syncs an external company customer with an eventually existing equivalent.
+     * @param externalCustomer the external customer to sync
+     * @return true if the customer was created, false if the customer already exists and was just updated.
+     */
     boolean syncCompanyCustomer(ExternalCustomer externalCustomer) {
         final String externalId = externalCustomer.getExternalId();
         final String companyNumber = externalCustomer.getCompanyNumber();
@@ -46,13 +56,19 @@ public class CustomerSync {
                 validateCompanyExternalId(externalId, companyNumber, customerToSync.getExternalId());
                 customerToSync.setExternalId(externalId);
                 customerToSync.setMasterExternalId(externalId);
-                duplicates.add(createNewCustomer(externalCustomer));
+                duplicates.add(getNewCustomer(externalCustomer));
             }
         }
 
         return doSync(externalCustomer, customerToSync, duplicates);
     }
 
+
+    /**
+     * Syncs an external person customer with an eventually existing equivalent.
+     * @param externalCustomer the external customer to sync
+     * @return true if the customer was created, false if the customer already exists and was just updated.
+     */
     boolean syncPersonCustomer(ExternalCustomer externalCustomer) {
         final String externalId = externalCustomer.getExternalId();
 
@@ -62,12 +78,19 @@ public class CustomerSync {
         return doSync(externalCustomer, customerToSync, Collections.emptyList());
     }
 
+    /**
+     * Given an external customer, its equivalent internal customer and some duplicates, this method will do all the necessary updates to sync them all.
+     * @param externalCustomer the external customer that was synced
+     * @param customerToSync its corresponding internal customer
+     * @param duplicates the duplicates that were discovered.
+     * @return true if the customer was created, false if it was just updated.
+     */
     boolean doSync(ExternalCustomer externalCustomer, Customer customerToSync, Collection<Customer> duplicates) {
         boolean created = false;
 
         if (customerToSync == null) {
             created = true;
-            customerToSync = createNewCustomer(externalCustomer);
+            customerToSync = getNewCustomer(externalCustomer);
         }
 
         //syncing the fields from external customer to customer.
@@ -85,6 +108,10 @@ public class CustomerSync {
         return created;
     }
 
+    /**
+     * Create or update a customer.
+     * @param customer the customer to create/update.
+     */
     void save(Customer customer) {
         if (customer.getInternalId() == null) {
             customerDataLayer.createCustomerRecord(customer);
@@ -93,17 +120,32 @@ public class CustomerSync {
         }
     }
 
-    Customer createNewCustomer(ExternalCustomer externalCustomer) {
+    /**
+     * Initialize a customer minimum fields based on its corresponding external customer.
+     * @param externalCustomer the external customer on which the init should be based.
+     * @return the initialized customer
+     */
+    Customer getNewCustomer(ExternalCustomer externalCustomer) {
         Customer customer = new Customer();
         customer.setExternalId(externalCustomer.getExternalId());
         customer.setMasterExternalId(externalCustomer.getExternalId());
         return customer;
     }
 
+    /**
+     * The update that should be on the duplicates, referred at as 'If there are several matching Customers in our database, update them all (slightly differently)' on emily bach Readme.
+     * @param externalCustomer the external customer on which duplicates were discovered.
+     * @param duplicate the corresponding duplicates.
+     */
     void updateDuplicateFields(ExternalCustomer externalCustomer, Customer duplicate) {
         duplicate.setName(externalCustomer.getName());
     }
 
+    /**
+     * Updates all the necessary fields on the Customer from the External Customer.
+     * @param externalCustomer the external customer that is used to update our internal customer
+     * @param customer the internal customer
+     */
     void updateCustomerFields(ExternalCustomer externalCustomer, Customer customer) {
         customer.setName(externalCustomer.getName());
         customer.setPreferredStore(externalCustomer.getPreferredStore());

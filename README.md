@@ -1,16 +1,26 @@
 Consumer Match Kata 
 ====================
 
-Some horrible code to refactor. Concentrate on the "CustomerSync" class. The purpose of the 'syncWithDataLayer' method is to take a ExternalCustomer instance, which has been updated in an external system, and see whether there is a matching Customer in our database. If there is not, create a new Customer to match the incoming ExternalCustomer. If there is one, update it. If there are several matching Customers in our database, update them all (slightly differently).
+This README provides insights into the motivations and decisions behind the recent refactoring of this codebase.
 
-There is a unit test there to start you off. It gives you a basic amount of coverage but has a rather weak assertion.
+## Scope of the solution:
+From what I understand the goal of this exercise is to be able to split the business logic from the data access layer and add a small modification (bonusPointsBalance).
+I did not see it fit for the purpose of the exercise to split packages, create DTO's....etc.
 
-The change you need to make
----------------------------
+## Initial Issue:
+Previously, the code suffered from a critical issue where the business logic was inconsistently distributed between two components: CustomerSync and CustomerDataAccess. 
+This resulted in an ambiguous and inefficient process where the logic for identifying duplicate customers was unpredictably split between these two classes.
 
-As ever, you have a goal with your refactoring. The scenario is that you have been asked to synchronize an additional field from the ExternalCustomer to the Customer. The field is 'bonusPointsBalance' and is an integer. Only private people have bonus points, not companies. Add the field and ensure that if the ExternalCustomer has a different number of points from the Customer, the balance is updated in our database.
+## Refactoring Goals:
+Understanding the core of the problem led me to a streamlined approach, simplifying the process into two primary steps:
 
-Branch with_tests
------------------
+- Customer Search: Implementing varied methodologies to search for customers, including identifying potential duplicates, depending on the customer type.
+- Update and Persist: Updating customer fields and the duplicates.
 
-The branch 'with_tests' is an alternative starting point where there are good unit tests available, and you can get started refactoring straight away. The code coverage is not quite 100%, I believe this is due to unreachable code. Another way to use this code is to read and understand the approval testing techniques used, or to re-write the tests in another style.
+Structural Changes:
+To achieve this streamlined process, I decided to eliminate the CustomerDataAccess component. 
+This layer, rather than adding value, was contributing to confusion and complexity.
+Now, CustomerSync assumes full responsibility for executing the aforementioned steps. 
+It directly interacts with the CustomerDataLayer for data retrieval and updates. 
+While CustomerDataAccess could have acted as a proxy, especially in scenarios where the persisted model diverges from the domain model, its removal simplifies the current solution without compromising functionality.
+We can also note that by getting rid of CustomerDataAccess and putting the business logic in CustomerSync we no longer need to maintain the class CustomerMatches which was not really a model class but only a variable of sharing the state between CustomerDataAccess and CustomerSync.
