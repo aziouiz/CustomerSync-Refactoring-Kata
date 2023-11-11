@@ -113,6 +113,7 @@ public class CustomerSync {
             customer.setCustomerType(CustomerType.COMPANY);
         } else {
             customer.setCustomerType(CustomerType.PERSON);
+            customer.setBonusPointsBalance(externalCustomer.getBonusPointsBalance());
         }
         List<ShoppingList> consumerShoppingLists = externalCustomer.getShoppingLists();
         for (ShoppingList consumerShoppingList : consumerShoppingLists) {

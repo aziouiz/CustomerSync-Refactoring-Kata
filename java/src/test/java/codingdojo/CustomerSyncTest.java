@@ -22,6 +22,9 @@ public class CustomerSyncTest {
 
         ExternalCustomer externalCustomer = createExternalCompany();
         externalCustomer.setExternalId(externalId);
+        //we simulate that we received a company with this field set, for instance the sender put it by mistake.
+        //in this case our service should simply ignore this value.
+        externalCustomer.setBonusPointsBalance(100);
 
         Customer customer = createCustomerWithSameCompanyAs(externalCustomer);
         customer.setExternalId(externalId);
@@ -46,11 +49,13 @@ public class CustomerSyncTest {
 
         ExternalCustomer externalCustomer = createExternalPrivatePerson();
         externalCustomer.setExternalId(externalId);
+        externalCustomer.setBonusPointsBalance(100);
 
         Customer customer = new Customer();
         customer.setCustomerType(CustomerType.PERSON);
         customer.setInternalId("67576");
         customer.setExternalId(externalId);
+        customer.setBonusPointsBalance(50);
 
         FakeDatabase db = new FakeDatabase();
         db.addCustomer(customer);

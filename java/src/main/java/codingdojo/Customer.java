@@ -14,6 +14,7 @@ public class Customer {
     private String name;
     private CustomerType customerType;
     private String companyNumber;
+    private Integer bonusPointsBalance;
 
     public void setExternalId(String externalId) {
         this.externalId = externalId;
@@ -93,6 +94,13 @@ public class Customer {
         this.setShoppingLists(newList);
     }
 
+    public Integer getBonusPointsBalance() {
+        return bonusPointsBalance;
+    }
+
+    public void setBonusPointsBalance(Integer bonusPointsBalance) {
+        this.bonusPointsBalance = bonusPointsBalance;
+    }
 
     @Override
     public boolean equals(Object o) {

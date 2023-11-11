@@ -9,6 +9,7 @@ All Customers {
         internalId='45435'
         name='company 1'
         customerType=COMPANY
+        bonusPointsBalance=null
         preferredStore='null'
         address='null'
         shoppingLists=[]
@@ -21,6 +22,7 @@ All Customers {
         internalId='45435234'
         name='company 2'
         customerType=COMPANY
+        bonusPointsBalance=null
         preferredStore='null'
         address='null'
         shoppingLists=[]
@@ -32,6 +34,7 @@ ExternalCustomer {
     companyNumber='470813-8895'
     name='Acme Inc.'
     preferredStore='null'
+    bonusPointsBalance='null'
     address='123 main st, SE-123 45 Helsingborg'
     shoppingLists=[[lipstick, blusher]]
 }
@@ -46,6 +49,7 @@ All Customers {
         internalId='45435'
         name='Acme Inc.'
         customerType=COMPANY
+        bonusPointsBalance=null
         preferredStore='null'
         address='123 main st, SE-123 45 Helsingborg'
         shoppingLists=[[lipstick, blusher]]
@@ -58,6 +62,7 @@ All Customers {
         internalId='45435234'
         name='Acme Inc.'
         customerType=COMPANY
+        bonusPointsBalance=null
         preferredStore='null'
         address='null'
         shoppingLists=[]
